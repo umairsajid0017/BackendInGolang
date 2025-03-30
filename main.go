@@ -18,9 +18,19 @@ var db *gorm.DB
 func initDB() {
 	var err error
 	dsn := os.Getenv("DATABASE_URL")
+	if dsn == "" {
+		log.Fatal("DATABASE_URL environment variable is not set")
+	}
+	
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatal("Failed to connect to database:", err)
+		log.Fatal("Failed to initialize database, got error ", err)
+	}
+
+	// Auto Migrate the schemas
+	err = db.AutoMigrate(&models.User{}, &models.Service{}, &models.Booking{}, &models.Category{})
+	if err != nil {
+		log.Fatal("Failed to migrate database schemas:", err)
 	}
 }
 
