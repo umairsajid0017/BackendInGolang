@@ -4,7 +4,6 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
-	"github.com/gorilla/mux"
 )
 
 func GetServicesHandler(w http.ResponseWriter, r *http.Request) {
