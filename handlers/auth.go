@@ -13,7 +13,11 @@ import (
 	"gorm.io/gorm"
 )
 
-var db *gorm.DB
+var DB *gorm.DB
+
+func InitDB(database *gorm.DB) {
+    DB = database
+}
 
 type Claims struct {
 	UserID uint64 `json:"user_id"`

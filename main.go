@@ -1,4 +1,3 @@
-
 package main
 
 import (
@@ -32,9 +31,10 @@ func main() {
 	}
 
 	initDB()
+	handlers.InitDB(db)
 
 	r := mux.NewRouter()
-	
+
 	// Auth routes
 	r.HandleFunc("/api/register", handlers.RegisterHandler).Methods("POST")
 	r.HandleFunc("/api/login", handlers.LoginHandler).Methods("POST")
