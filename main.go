@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 
+	"main/handlers"
+	"main/middleware"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
@@ -34,30 +36,30 @@ func main() {
 	r := mux.NewRouter()
 	
 	// Auth routes
-	r.HandleFunc("/api/register", RegisterHandler).Methods("POST")
-	r.HandleFunc("/api/login", LoginHandler).Methods("POST")
+	r.HandleFunc("/api/register", handlers.RegisterHandler).Methods("POST")
+	r.HandleFunc("/api/login", handlers.LoginHandler).Methods("POST")
 
 	// Protected routes
 	api := r.PathPrefix("/api").Subrouter()
-	api.Use(AuthMiddleware)
+	api.Use(middleware.AuthMiddleware)
 
 	// Service routes
-	api.HandleFunc("/services", GetServicesHandler).Methods("GET")
-	api.HandleFunc("/services", CreateServiceHandler).Methods("POST")
-	api.HandleFunc("/services/{id}", UpdateServiceHandler).Methods("PUT")
-	api.HandleFunc("/services/{id}", DeleteServiceHandler).Methods("DELETE")
+	api.HandleFunc("/services", handlers.GetServicesHandler).Methods("GET")
+	api.HandleFunc("/services", handlers.CreateServiceHandler).Methods("POST")
+	api.HandleFunc("/services/{id}", handlers.UpdateServiceHandler).Methods("PUT")
+	api.HandleFunc("/services/{id}", handlers.DeleteServiceHandler).Methods("DELETE")
 
 	// Booking routes  
-	api.HandleFunc("/bookings", GetBookingsHandler).Methods("GET")
-	api.HandleFunc("/bookings", CreateBookingHandler).Methods("POST")
-	api.HandleFunc("/bookings/{id}/status", UpdateBookingStatusHandler).Methods("PUT")
+	api.HandleFunc("/bookings", handlers.GetBookingsHandler).Methods("GET")
+	api.HandleFunc("/bookings", handlers.CreateBookingHandler).Methods("POST")
+	api.HandleFunc("/bookings/{id}/status", handlers.UpdateBookingStatusHandler).Methods("PUT")
 
 	// Worker routes
-	api.HandleFunc("/workers", GetWorkersHandler).Methods("GET")
-	api.HandleFunc("/workers/status", UpdateWorkerStatusHandler).Methods("POST")
+	api.HandleFunc("/workers", handlers.GetWorkersHandler).Methods("GET")
+	api.HandleFunc("/workers/status", handlers.UpdateWorkerStatusHandler).Methods("POST")
 
 	// Category routes
-	api.HandleFunc("/categories", GetCategoriesHandler).Methods("GET")
+	api.HandleFunc("/categories", handlers.GetCategoriesHandler).Methods("GET")
 
 	log.Println("Server starting on port 5000...")
 	log.Fatal(http.ListenAndServe("0.0.0.0:5000", r))
