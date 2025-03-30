@@ -4,11 +4,16 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"os"
 	"time"
 
+	"main/models"
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
+
+var db *gorm.DB
 
 type Claims struct {
 	UserID uint64 `json:"user_id"`
