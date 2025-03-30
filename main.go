@@ -7,6 +7,7 @@ import (
 
 	"main/handlers"
 	"main/middleware"
+	"main/models"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
