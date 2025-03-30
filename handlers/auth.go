@@ -35,7 +35,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user.Password = string(hashedPassword)
-	result := db.Create(&user)
+	result := DB.Create(&user)
 	if result.Error != nil {
 		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
 		return
@@ -53,7 +53,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewDecoder(r.Body).Decode(&credentials)
 
 	var user models.User
-	result := db.Where("email = ?", credentials.Email).First(&user)
+	result := DB.Where("email = ?", credentials.Email).First(&user)
 	if result.Error != nil {
 		http.Error(w, "Invalid credentials", http.StatusUnauthorized)
 		return
